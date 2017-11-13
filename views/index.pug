@@ -1,7 +1,7 @@
-doctype html
-html
-	head
-		title node and express app
-	body
-		h1 Hello world
-		
+extends layout
+
+block content
+	h1 #{title} world
+	ul
+		each article, i in articles
+			li= article.title
