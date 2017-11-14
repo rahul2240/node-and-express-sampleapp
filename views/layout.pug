@@ -2,9 +2,26 @@ doctype html
 html
 	head
 		title node and express app
+		link(rel='stylesheet' href='/bower_components/bootstrap/dist/css/bootstrap.css')
 	body
-		block content
-		br
-		hr
-		footer
-			p copyright @2017
+		nav.navbar.navbar-inverse
+			.container
+				a.navbar-brand(href='#') KnowledgeBase
+				ul.nav.navbar-nav
+					li.nav-item
+						a.nav-link(href='/')
+							| Home 
+							span.sr-only (current)
+					li.nav-item
+						a.nav-link(href='/articles/add') Add Articles
+					li.nav-item.dropdown
+							a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+								| Dropdown
+					li.nav-item
+						a.nav-link.disabled(href='#') Disabled
+		.container
+			block content
+			br
+			hr
+			footer
+				p copyright @2017
