@@ -2,3 +2,6 @@ extends layout
 	
 block content
 	h1= article.title
+	p= article.body
+	br
+	a.btn.btn-default(href='/articles/edit/'+ article._id) Edit

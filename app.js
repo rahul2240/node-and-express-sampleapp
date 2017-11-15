@@ -74,6 +74,8 @@ app.post('/articles/add', function(req, res){
 	});
 });
 
+// show a particular article
+
 app.get('/articles/:id', function(req, res){
 	Article.findById(req.params.id, function(err, article){
 		res.render('article',{
@@ -81,6 +83,36 @@ app.get('/articles/:id', function(req, res){
 		});
 	});
 });
+
+// Edit a article
+
+app.get('/articles/edit/:id', function(req, res){
+	Article.findById(req.params.id, function(err, article){
+		res.render('edit_article',{
+			article: article
+		});
+	});
+});
+
+app.post('/articles/edit/:id', function(req, res){
+	
+	let query = {_id: req.params.id}
+	let article = {}
+	article.title = req.body.title;
+	article.author = req.body.author;
+	article.body = req.body.body; 
+
+	Article.update(query, article, function(err){
+		if(err){
+			console.log(err);
+		} else {
+			res.redirect('/');
+		}
+	});
+
+});
+
+
 
 // Start Server
 app.listen(3000, function(){
