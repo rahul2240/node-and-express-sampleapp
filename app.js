@@ -74,6 +74,14 @@ app.post('/articles/add', function(req, res){
 	});
 });
 
+app.get('/articles/:id', function(req, res){
+	Article.findById(req.params.id, function(err, article){
+		res.render('article',{
+			article: article
+		});
+	});
+});
+
 // Start Server
 app.listen(3000, function(){
 	console.log("server started on port 3000");
