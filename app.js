@@ -100,6 +100,14 @@ app.get('/articles/add', function(req, res){
 // Add submit post route
 
 app.post('/articles/add', function(req, res){
+	req.checkBody('title', 'Title is required').notEmpty();
+	req.checkBody('author', 'Author is required').notEmpty();
+	req.checkBody('body', 'BOdy is required').notEmpty();
+
+	// Get Errors
+	let error = req.validationErrors();
+
+
 	let article = new Article();
 	article.title = req.body.title;
 	article.author = req.body.author;
@@ -108,10 +116,14 @@ app.post('/articles/add', function(req, res){
 	article.save(function(err){
 		if(err){
 			console.log(err);
+			return;
 		} else {
 			res.redirect('/');
 		}
 	});
+
+
+
 });
 
 // show a particular article
