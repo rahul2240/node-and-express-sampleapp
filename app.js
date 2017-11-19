@@ -38,7 +38,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Express session middle ware
-
+app.set('trust proxy', 1) // trust first proxy
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -89,95 +89,10 @@ app.get('/', function(req, res){
 	
 });
 
-// Add Article
+// route files
 
-app.get('/articles/add', function(req, res){
-	res.render("add_article", {
-		title: "Add new article"
-	});
-});
-
-// Add submit post route
-
-app.post('/articles/add', function(req, res){
-	req.checkBody('title', 'Title is required').notEmpty();
-	req.checkBody('author', 'Author is required').notEmpty();
-	req.checkBody('body', 'BOdy is required').notEmpty();
-
-	// Get Errors
-	let error = req.validationErrors();
-
-
-	let article = new Article();
-	article.title = req.body.title;
-	article.author = req.body.author;
-	article.body = req.body.body;
-
-	article.save(function(err){
-		if(err){
-			console.log(err);
-			return;
-		} else {
-			res.redirect('/');
-		}
-	});
-
-
-
-});
-
-// show a particular article
-
-app.get('/articles/:id', function(req, res){
-	Article.findById(req.params.id, function(err, article){
-		res.render('article',{
-			article: article
-		});
-	});
-});
-
-// Edit a article
-
-app.get('/articles/edit/:id', function(req, res){
-	Article.findById(req.params.id, function(err, article){
-		res.render('edit_article',{
-			article: article
-		});
-	});
-});
-
-app.post('/articles/edit/:id', function(req, res){
-	
-	let query = {_id: req.params.id}
-	let article = {}
-	article.title = req.body.title;
-	article.author = req.body.author;
-	article.body = req.body.body; 
-
-	Article.update(query, article, function(err){
-		if(err){
-			console.log(err);
-		} else {
-			req.flash('success', 'Article Updated');
-			res.redirect('/');
-		}
-	});
-
-});
-
-// Delete a article
-
-app.delete('/article/:id', function(req, res){
-	let query = {_id:req.params.id}
-
-	Article.remove(query, function(err){
-		if(err){
-			console.log(err);
-		}
-		res.send('Success');
-	});
-});
-
+let articles = require('./routes/articles');
+app.use('/articles', articles)
 
 // Start Server
 app.listen(3000, function(){
